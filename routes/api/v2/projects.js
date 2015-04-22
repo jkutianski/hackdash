@@ -356,18 +356,18 @@ var sendProjects = function(req, res){
 
 var sendOembedProject = function(req, res){
   var oembed = {
-      type: "rich"
+      type: 'rich'
     , title: req.project.title
     , html: res.render('oembed_project', {
         project: req.project
-      , width: req.params.width
-      , height: req.params.height
+      , width: req.query.width
+      , height: req.query.height
       })
-    , width: req.params.width
-    , height: req.params.height
-    , provider_name: "HackDash"
-    , provider_url: "http://www.hackdash.org/"
-    ,  version: "1.0"
+    , width: req.query.width
+    , height: req.query.height
+    , provider_name: 'HackDash'
+    , provider_url: 'http://www.hackdash.org/'
+    ,  version: '1.0'
   };
   res.send(oembed);
 };
