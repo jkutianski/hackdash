@@ -40,6 +40,8 @@ module.exports = function(app, uri, common) {
   app.del(uri + '/projects/:pid', common.isAuth, getProject, canChangeProject, removeProject);
   app.put(uri + '/projects/:pid', common.isAuth, getProject, canChangeProject, updateProject, sendProject);
 
+  app.get(uri + '/projects/:pid/oembed', getProject, sendOembedProject);
+
   app.post(uri + '/projects/:pid/followers', common.isAuth, getProject, validate, addFollower);
   app.del(uri + '/projects/:pid/followers', common.isAuth, getProject, validate, removeFollower);
 
@@ -350,6 +352,24 @@ var sendProject = function(req, res){
 
 var sendProjects = function(req, res){
   res.send(req.projects);
+};
+
+var sendOembedProject = function(req, res){
+  var oembed = {
+      type: "rich"
+    , title: req.project.title
+    , html: res.render('oembed_project', {
+        project: req.project
+      , width: req.params.width
+      , height: req.params.height
+      })
+    , width: req.params.width
+    , height: req.params.height
+    , provider_name: "HackDash"
+    , provider_url: "http://www.hackdash.org/"
+    ,  version: "1.0"
+  };
+  res.send(oembed);
 };
 
 var updateDashboard = function(domain, done){

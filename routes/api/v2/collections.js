@@ -27,6 +27,9 @@ module.exports = function(app, uri, common) {
   // Get a collection
   app.get(uri + '/collections/:cid', getCollection, sendCollection);
 
+  // Get a collection OEMBED
+  app.get(uri + '/collections/:cid/oembed', getCollection, sendOembedCollection);
+
   // Update a user collection
   app.put(uri + '/collections/:cid', common.isAuth, getCollection, isOwner, updateCollection);
 
@@ -174,4 +177,22 @@ var sendCollections = function(req, res){
 
 var sendCollection = function(req, res){
   res.send(req.collection);
+};
+
+var sendOembedCollection = function(req, res){
+  var oembed = {
+      type: "rich"
+    , title: req.collection.title
+    , html: res.render('oembed_collection', {
+        collection: req.collection
+      , width: req.params.width
+      , height: req.params.height
+      })
+    , width: req.params.width
+    , height: req.params.height
+    , provider_name: "HackDash"
+    , provider_url: "http://www.hackdash.org/"
+    ,  version: "1.0"
+  };
+  res.send(oembed);
 };
