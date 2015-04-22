@@ -8,6 +8,7 @@
 var passport = require('passport')
   , mongoose = require('mongoose')
   , fs = require('fs')
+  , url = require('url')
   , config = require('../../../config.json');
 
 var Project = mongoose.model('Project')
@@ -359,16 +360,21 @@ var sendOembedProject = function(req, res){
       type: 'rich'
     , title: req.project.title
     , html: res.render('oembed_project', {
-        project: req.project
-      , width: req.query.width
-      , height: req.query.height
+            project: req.project
+          , width: req.query.width
+          , height: req.query.height
       })
     , width: req.query.width
     , height: req.query.height
-    , provider_name: 'HackDash'
-    , provider_url: 'http://www.hackdash.org/'
+    , provider_name: config.title
+    , provider_url: url.format({
+            protocol: req.protocol
+          , hostname: config.host
+          , port: config.port
+      })
     ,  version: '1.0'
   };
+
   res.send(oembed);
 };
 

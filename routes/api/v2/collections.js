@@ -184,15 +184,19 @@ var sendOembedCollection = function(req, res){
       type: 'rich'
     , title: req.collection.title
     , html: res.render('oembed_collection', {
-        collection: req.collection
-      , width: req.query.width
-      , height: req.query.height
+            collection: req.collection
+          , width: req.query.width
+          , height: req.query.height
       })
     , width: req.query.width
     , height: req.query.height
-    , provider_name: 'HackDash'
-    , provider_url: 'http://www.hackdash.org/'
-    ,  version: '1.0'
+    , provider_name: config.title
+    , provider_url: url.format({
+            protocol: req.protocol
+          , hostname: config.host
+          , port: config.port
+      })
+    , version: '1.0'
   };
   res.send(oembed);
 };
