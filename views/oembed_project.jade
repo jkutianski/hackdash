@@ -1,0 +1,31 @@
+﻿.hackdash
+	.card
+		.provider
+			a.provider-link(target="_blank" href= base_url)
+				.provider-logo(style="background-image: url(" + base_url + "/images/logohack.png); background-size: 100% 100%; background-repeat: no-repeat;")
+
+		.project
+			a.project-name(target="_blank", href= base_url + project_path)
+				h1 #{project.title}
+			
+			a.project-art(target="_blank", href= base_url + project_path)
+				.project-art-image(style="background-image: url(" + base_url + project.cover + "); background-size: 100% 100%; background-repeat: no-repeat;")
+			
+			p.project-description #{project.description}
+
+			p.project-manager Manager
+			.project-manager-avatar(style="background-image: url(" + project.leader.picture + "); background-size: 100% 100%; background-repeat: no-repeat;")
+			p.project-manager-name #{project.leader.name}
+
+			a.project-link(target="_blank", href= base_url + project_path) Ver este projecto &gt;
+
+script(type='text/javascript').
+	if (!document.getElementById('hackdash-project-css')) {
+		var link  = document.createElement('link');
+		link.href = "#{css_url}";
+		link.id   = 'hackdash-project-css';
+		link.rel  = 'stylesheet';
+		link.type = 'text/css';
+		link.media = 'all';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
