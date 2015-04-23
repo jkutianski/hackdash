@@ -180,23 +180,41 @@ var sendCollection = function(req, res){
 };
 
 var sendOembedCollection = function(req, res){
+  var base_url = {
+        protocol: req.protocol,
+        hostname: config.host,
+        port: config.port
+    }
+    , collection_path = '/collections/' + req.collection._id
+    , user_path = '/users/' + req.collection.leader._id
+    , width = (typeof req.query.width !== undefined) ? req.query.width : null
+    , height = (typeof req.query.height !== undefined) ? req.query.height : null ;
+
   var oembed = {
-      type: 'rich'
-    , title: req.collection.title
-    , html: res.render('oembed_collection', {
-            collection: req.collection
-          , width: req.query.width
-          , height: req.query.height
+    type: 'rich',
+    version: '1.0',
+    provider_name: config.title,
+    provider_url: url.format({
+        protocol: req.protocol,
+        hostname: config.host,
+        port: config.port
       })
-    , width: req.query.width
-    , height: req.query.height
-    , provider_name: config.title
-    , provider_url: url.format({
-            protocol: req.protocol
-          , hostname: config.host
-          , port: config.port
+    title: req.collection.title,
+    description: req.collection.description,
+    author_name: req.collection.leader.name,
+    author_url: url.format(_.extend(base_url, {path: user_path})),
+    url: url.format(_.extend(base_url, {path: collection_path})),
+    html: res.render('oembed_collection', {
+        collection: req.collection,
+        width: width,
+        width: width,
+        base_url: url.format(base_url),
+        collection_path: collection_path,
+        css_url: req.query.css || url.format(_.extend(base_url, {path: '/styles/oembed.css'}))
       })
-    , version: '1.0'
+    width: width,
+    height: height
   };
+  
   res.send(oembed);
 };

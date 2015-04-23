@@ -9,6 +9,7 @@ var passport = require('passport')
   , mongoose = require('mongoose')
   , fs = require('fs')
   , url = require('url')
+  , _ = require('underscore')
   , config = require('../../../config.json');
 
 var Project = mongoose.model('Project')
@@ -356,23 +357,40 @@ var sendProjects = function(req, res){
 };
 
 var sendOembedProject = function(req, res){
+  var base_url = {
+        protocol: req.protocol,
+        hostname: config.host,
+        port: config.port
+    }
+    , project_path = '/projects/' + req.project._id
+    , user_path = '/users/' + req.project.leader._id
+    , width = (typeof req.query.width !== undefined) ? req.query.width : null
+    , height = (typeof req.query.height !== undefined) ? req.query.height : null ;
+
   var oembed = {
-      type: 'rich'
-    , title: req.project.title
-    , html: res.render('oembed_project', {
-            project: req.project
-          , width: req.query.width
-          , height: req.query.height
+    type: 'rich',
+    version: '1.0',
+    provider_name: config.title,
+    provider_url: url.format({
+        protocol: req.protocol,
+        hostname: config.host,
+        port: config.port
       })
-    , width: req.query.width
-    , height: req.query.height
-    , provider_name: config.title
-    , provider_url: url.format({
-            protocol: req.protocol
-          , hostname: config.host
-          , port: config.port
+    title: req.project.title,
+    description: req.project.description,
+    author_name: req.project.leader.name,
+    author_url: url.format(_.extend(base_url, {path: user_path})),
+    url: url.format(_.extend(base_url, {path: project_path})),
+    html: res.render('oembed_project', {
+        project: req.project,
+        width: width,
+        width: width,
+        base_url: url.format(base_url),
+        project_path: project_path,
+        css_url: req.query.css || url.format(_.extend(base_url, {path: '/styles/oembed.css'}))
       })
-    ,  version: '1.0'
+    width: width,
+    height: height
   };
 
   res.send(oembed);
