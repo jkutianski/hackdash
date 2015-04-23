@@ -194,11 +194,7 @@ var sendOembedCollection = function(req, res){
     type: 'rich',
     version: '1.0',
     provider_name: config.title,
-    provider_url: url.format({
-        protocol: req.protocol,
-        hostname: config.host,
-        port: config.port
-      })
+    provider_url: url.format(base_url)
     title: req.collection.title,
     description: req.collection.description,
     author_name: req.collection.leader.name,
