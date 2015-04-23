@@ -1,0 +1,24 @@
+﻿.hackdash
+	.card
+		.provider
+			a.provider-link(target="_blank" href= base_url)
+				.provider-logo(style="background-image: url(" + base_url + "/images/logohack.png); background-size: 100% 100%; background-repeat: no-repeat;")
+
+		.collection
+			a.collection-name(target="_blank", href= base_url + project_path)
+				h1 #{collection.title}
+			
+			p.collection-description #{collection.description}
+
+			a.collection-link(target="_blank", href= base_url + collection_path) View this collection &gt;
+
+script(type='text/javascript').
+	if (!document.getElementById('hackdash-collection-css')) {
+		var link  = document.createElement('link');
+		link.href = "#{css_url}";
+		link.id   = 'hackdash-collection-css';
+		link.rel  = 'stylesheet';
+		link.type = 'text/css';
+		link.media = 'all';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
