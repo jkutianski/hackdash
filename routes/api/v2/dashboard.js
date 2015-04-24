@@ -29,6 +29,8 @@ module.exports = function(app, uri, common) {
   app.get(uri + '/dashboards/:domain', getDashboard, sendDashboard);
   app.get(uri + '/', getDashboard, sendDashboard);
 
+  app.get(uri + '/dashboards/:domain/oembed', getDashboard, sendOembedDashboard);
+
   app.put(uri + '/dashboards/:domain', common.isAuth, getDashboard, isAdminDashboard, updateDashboard, sendDashboard);
   app.put(uri + '/', common.isAuth, getDashboard, isAdminDashboard, updateDashboard, sendDashboard);
 
@@ -235,6 +237,38 @@ var sendDashboard = function(req, res){
     res.send(req.dashboard);
   }
 };
+
+var sendOembedDashboard = function(req, res){
+  var base_url = {
+        protocol: req.protocol,
+        hostname: config.host,
+        port: config.port
+    }
+    , collection_path = '/dashboard/' + req.dashboard._id
+    , user_path = '/users/' + req.dashboard.leader._id
+    , width = (typeof req.query.width !== undefined) ? req.query.width : null
+    , height = (typeof req.query.height !== undefined) ? req.query.height : null ;
+
+  var oembed = {
+    type: 'rich',
+    version: '1.0',
+    provider_name: config.title,
+    provider_url: url.format(base_url)
+    title: req.dashboard.title,
+    description: req.dashboard.description,
+    author_name: req.dashboard.leader.name,
+    author_url: url.format(_.extend(base_url, {path: user_path})),
+    url: url.format(_.extend(base_url, {path: dashboard_path})),
+    html: res.render('oembed_dashboard', {
+        dashboard: req.dashboard,
+        width: width,
+        width: width,
+        base_url: url.format(base_url),
+        collection_path: collection_path
+      })
+    width: width,
+    height: height
+  };
 
 var sendDashboards = function(req, res){
   res.send(req.dashboards);
