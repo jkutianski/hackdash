@@ -382,8 +382,7 @@ var sendOembedProject = function(req, res){
         width: width,
         width: width,
         base_url: url.format(base_url),
-        project_path: project_path,
-        css_url: req.query.css || url.format(_.extend(base_url, {path: '/styles/oembed.css'}))
+        project_path: project_path
       })
     width: width,
     height: height

@@ -205,8 +205,7 @@ var sendOembedCollection = function(req, res){
         width: width,
         width: width,
         base_url: url.format(base_url),
-        collection_path: collection_path,
-        css_url: req.query.css || url.format(_.extend(base_url, {path: '/styles/oembed.css'}))
+        collection_path: collection_path
       })
     width: width,
     height: height
