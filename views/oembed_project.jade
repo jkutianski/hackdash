@@ -20,9 +20,18 @@
 			a.project-link(target="_blank", href= base_url + project_path) View this project &gt;
 
 script(type='text/javascript').
+	if (!document.getElementById('hackdash-common-css')) {
+		var link  = document.createElement('link');
+		link.href = '#{base_url}/styles/oembed-common.css';
+		link.id   = 'hackdash-common-css';
+		link.rel  = 'stylesheet';
+		link.type = 'text/css';
+		link.media = 'all';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
 	if (!document.getElementById('hackdash-project-css')) {
 		var link  = document.createElement('link');
-		link.href = "#{css_url}";
+		link.href = '#{base_url}/styles/oembed-project.css';
 		link.id   = 'hackdash-project-css';
 		link.rel  = 'stylesheet';
 		link.type = 'text/css';
